@@ -1,6 +1,5 @@
 local M = {}
 local utils = require "clipboard-image.utils"
-local health = require "health"
 
 local packages = {
   x11 = { name = "xclip", binary = "xclip" },
@@ -47,6 +46,13 @@ end
 ---See also `:h health-lua`
 M.check = function()
   local is_dep_exist, report_msg = M.check_current_dep()
+  local health
+
+  if vim.fn.has "nvim-0.9" then
+    health = vim.health
+  else
+    health = require "health"
+  end
 
   health.report_start "Checking dependencies"
   if is_dep_exist then
